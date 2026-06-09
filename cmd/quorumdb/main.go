@@ -46,5 +46,39 @@ func main() {
 			continue
 		}
 
+		command := strings.ToUpper(parts[0])
+		switch command {
+		case "SET":
+			if len(parts) != 3 {
+				fmt.Println("Usage: SET <key> <value>")
+				continue
+			}
+
+			err := engine.Set(parts[1], parts[2])
+
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+			fmt.Println("OK")
+
+		case "GET":
+			if len(parts) != 2 {
+				fmt.Println("Usage: GET <key>")
+				continue
+			}
+			value, exists := engine.Get(parts[1])
+
+			if !exists {
+				fmt.Println("key not found")
+				continue
+			} 
+
+			fmt.Println(value)
+
+		default:
+			fmt.Println("Unknown command")
+		}
+
 	}
 }
